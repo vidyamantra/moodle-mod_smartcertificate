@@ -32,7 +32,7 @@ Visit Settings > Site Administration > Notifications, You should find the module
 Dependencies 
 ------------
 
-2- To run "smartcertificate" module you need to add another plugin named "smartcertificatesearch" found at "https://github.com/ravi18011991/smartcertificatesearch". 
+2- To run "smartcertificate" module you need to add another plugin named "smartcertificatesearch" found at "https://github.com/vidyamantra/moodle-tool_smartcertificatesearch". 
 Locate this folder 'smartcertificatesearch' into 'admin/tool' directory of moodle
 
 File structure for Smartcertificatesearch would be. [site-root]/admin/tool/smartcertificatesearch
