@@ -22,6 +22,8 @@ Requirements
 
 Moodle 3.0 +
 
+[Plugin](https://github.com/vidyamantra/moodle-tool_smartcertificatesearch)
+
 Installation
 ------------
 1- Unpack the "moodle-mod_smartcertificate.zip" and rename that unzipped folder to "smartcertificate" and place this folder into 'mod' directory of moodle. 
