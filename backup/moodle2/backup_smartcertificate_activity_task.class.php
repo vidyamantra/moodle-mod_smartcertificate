@@ -21,9 +21,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once($CFG->dirroot . '/mod/smartcertificate/backup/moodle2/backup_smartcertificate_stepslib.php'); // Because it exists (must)
-require_once($CFG->dirroot . '/mod/smartcertificate/backup/moodle2/backup_smartcertificate_settingslib.php'); // Because it exists (optional)
-
+require_once($CFG->dirroot . '/mod/smartcertificate/backup/moodle2/backup_smartcertificate_stepslib.php');
+require_once($CFG->dirroot . '/mod/smartcertificate/backup/moodle2/backup_smartcertificate_settingslib.php');
 /**
  * smartcertificate backup task that provides all the settings and steps to perform one
  * complete backup of the activity
@@ -34,14 +33,14 @@ class backup_smartcertificate_activity_task extends backup_activity_task {
      * Define (add) particular settings this activity can have
      */
     protected function define_my_settings() {
-        // No particular settings for this activity
+        // No particular settings for this activity.
     }
 
     /**
      * Define (add) particular steps this activity can have
      */
     protected function define_my_steps() {
-        // smartcertificate only has one structure step
+        // Smartcertificate only has one structure step.
         $this->add_step(new backup_smartcertificate_activity_structure_step('smartcertificate_structure', 'smartcertificate.xml'));
     }
 
@@ -52,15 +51,15 @@ class backup_smartcertificate_activity_task extends backup_activity_task {
     static public function encode_content_links($content) {
         global $CFG;
 
-        $base = preg_quote($CFG->wwwroot,"/");
+        $base = preg_quote($CFG->wwwroot, "/");
 
-        // Link to the list of smartcertificates
-        $search="/(".$base."\/mod\/smartcertificate\/index.php\?id\=)([0-9]+)/";
-        $content= preg_replace($search, '$@smartcertificateINDEX*$2@$', $content);
+        // Link to the list of smartcertificates.
+        $search = "/(".$base."\/mod\/smartcertificate\/index.php\?id\=)([0-9]+)/";
+        $content = preg_replace($search, '$@smartcertificateINDEX*$2@$', $content);
 
-        // Link to smartcertificate view by moduleid
-        $search="/(".$base."\/mod\/smartcertificate\/view.php\?id\=)([0-9]+)/";
-        $content= preg_replace($search, '$@smartcertificateVIEWBYID*$2@$', $content);
+        // Link to smartcertificate view by moduleid.
+        $search = "/(".$base."\/mod\/smartcertificate\/view.php\?id\=)([0-9]+)/";
+        $content = preg_replace($search, '$@smartcertificateVIEWBYID*$2@$', $content);
 
         return $content;
     }

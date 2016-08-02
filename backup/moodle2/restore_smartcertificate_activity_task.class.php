@@ -23,7 +23,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/mod/smartcertificate/backup/moodle2/restore_smartcertificate_stepslib.php'); // Because it exists (must)
+require_once($CFG->dirroot . '/mod/smartcertificate/backup/moodle2/restore_smartcertificate_stepslib.php');
 
 /**
  * smartcertificate restore task that provides all the settings and steps to perform one
@@ -35,14 +35,14 @@ class restore_smartcertificate_activity_task extends restore_activity_task {
      * Define (add) particular settings this activity can have
      */
     protected function define_my_settings() {
-        // No particular settings for this activity
+        // No particular settings for this activity.
     }
 
     /**
      * Define (add) particular steps this activity can have
      */
     protected function define_my_steps() {
-        // smartcertificate only has one structure step
+        // Smartcertificate only has one structure step.
         $this->add_step(new restore_smartcertificate_activity_structure_step('smartcertificate_structure', 'smartcertificate.xml'));
     }
 
@@ -103,7 +103,7 @@ class restore_smartcertificate_activity_task extends restore_activity_task {
     static public function define_restore_log_rules_for_course() {
         $rules = array();
 
-        // Fix old wrong uses (missing extension)
+        // Fix old wrong uses (missing extension).
         $rules[] = new restore_log_rule('smartcertificate', 'view all', 'index.php?id={course}', null);
 
         return $rules;
@@ -117,14 +117,14 @@ class restore_smartcertificate_activity_task extends restore_activity_task {
     public function after_restore() {
         global $DB;
 
-        // Get the new module
+        // Get the new module.
         $sql = "SELECT c.*
                 FROM {smartcertificate} c
                 INNER JOIN {course_modules} cm
                 ON c.id = cm.instance
                 WHERE cm.id = :cmid";
-        if ($smartcertificate = $DB->get_record_sql($sql, (array('cmid'=>$this->get_moduleid())))) {
-            // A flag to check if we need to update the database or not
+        if ($smartcertificate = $DB->get_record_sql($sql, (array('cmid' => $this->get_moduleid())))) {
+            // A flag to check if we need to update the database or not.
             $update = false;
             if ($smartcertificate->printdate > 2) { // If greater than 2, then it is a grade item value.
                 if ($newitem = restore_dbops::get_backup_ids_record($this->get_restoreid(), 'course_module', $smartcertificate->printdate)) {
@@ -139,7 +139,7 @@ class restore_smartcertificate_activity_task extends restore_activity_task {
                 }
             }
             if ($update) {
-                // Update the smartcertificate
+                // Update the smartcertificate.
                 $DB->update_record('smartcertificate', $smartcertificate);
             }
         }

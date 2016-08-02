@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 $capabilities = array(
-    
+
     'mod/smartcertificate:addinstance' => array(
         'riskbitmask' => RISK_XSS,
         'captype' => 'write',
@@ -33,7 +33,7 @@ $capabilities = array(
         ),
         'clonepermissionsfrom' => 'moodle/course:manageactivities'
     ),
-    
+
     'mod/smartcertificate:view' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,
@@ -44,7 +44,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         )
     ),
-    
+
     'mod/smartcertificate:manage' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,
@@ -63,7 +63,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         )
     ),
-    
+
     'mod/smartcertificate:delete' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,

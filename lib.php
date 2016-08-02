@@ -39,10 +39,6 @@ function smartcertificate_add_instance($smartcertificate) {
 
     return $DB->insert_record('smartcertificate', $smartcertificate);
 }
-/*testing by ravi kumar */
-function get_pathname_hash($contextid, $component, $filearea, $itemid, $filepath, $filename) {
-        return sha1("/$contextid/$component/$filearea/$itemid".$filepath.$filename);
-}
 /**
  * Update smartcertificate instance.
  *
@@ -70,12 +66,12 @@ function smartcertificate_update_instance($smartcertificate) {
 function smartcertificate_delete_instance($id) {
     global $DB;
 
-    // Ensure the smartcertificate exists
+    // Ensure the smartcertificate exists.
     if (!$smartcertificate = $DB->get_record('smartcertificate', array('id' => $id))) {
         return false;
     }
 
-    // Prepare file record object
+    // Prepare file record object.
     if (!$cm = get_coursemodule_from_instance('smartcertificate', $id)) {
         return false;
     }
@@ -86,7 +82,7 @@ function smartcertificate_delete_instance($id) {
         $result = false;
     }
 
-    // Delete any files associated with the smartcertificate
+    // Delete any files associated with the smartcertificate.
     $context = context_module::instance($cm->id);
     $fs = get_file_storage();
     $fs->delete_area_files($context->id);
@@ -130,7 +126,7 @@ function smartcertificate_reset_userdata($data) {
         $DB->delete_records_select('smartcertificate_issues', "smartcertificateid IN ($sql)", $params);
         $status[] = array('component' => $componentstr, 'item' => get_string('removecert', 'smartcertificate'), 'error' => false);
     }
-    // Updating dates - shift may be negative too
+    // Updating dates - shift may be negative too.
     if ($data->timeshift) {
         shift_course_mod_dates('smartcertificate', array('timeopen', 'timeclose'), $data->timeshift, $data->courseid);
         $status[] = array('component' => $componentstr, 'item' => get_string('datechanged'), 'error' => false);
@@ -178,7 +174,8 @@ function smartcertificate_user_outline($course, $user, $mod, $smartcertificate) 
     global $DB;
 
     $result = new stdClass;
-    if ($issue = $DB->get_record('smartcertificate_issues', array('smartcertificateid' => $smartcertificate->id, 'userid' => $user->id))) {
+    if ($issue = $DB->get_record('smartcertificate_issues',
+        array('smartcertificateid' => $smartcertificate->id, 'userid' => $user->id))) {
         $result->info = get_string('issued', 'smartcertificate');
         $result->time = $issue->timecreated;
     } else {
@@ -300,7 +297,7 @@ function smartcertificate_pluginfile($course, $cm, $context, $filearea, $args, $
         if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
             return false;
         }
-        send_stored_file($file, 0, 0, true); // download MUST be forced - security!
+        send_stored_file($file, 0, 0, true); // Download MUST be forced - security!.
     }
 }
 

@@ -21,6 +21,7 @@
  * @copyright  Vidya Mantra EduSystems Pvt. Ltd.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 require('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot . '/mod/smartcertificate/locallib.php');
@@ -53,7 +54,7 @@ if ($delete and confirm_sesskey()) {
     if ($confirm != md5($delete)) {
         echo $OUTPUT->heading(get_string('deleteinst', 'smartcertificate'));
         $optionsyes = array('delete' => $delete, 'confirm' => md5($delete), 'sesskey' => sesskey());
-        if ($result == TRUE) {
+        if ($result == true) {
             echo $OUTPUT->confirm(get_string('deletecheckfullifissued', 'smartcertificate'), new moodle_url($returnurl, $optionsyes), $returnurl);
         } else {
             echo $OUTPUT->confirm(get_string('deletecheckfull', 'smartcertificate'), new moodle_url($returnurl, $optionsyes), $returnurl);

@@ -33,8 +33,8 @@ $pdf->setPrintFooter(false);
 $pdf->SetAutoPageBreak(false, 0);
 $pdf->AddPage();
 
-// Define variables
-// Landscape
+// Define variables.
+// Landscape.
 if ($smartcertificate->orientation == 'L') {
     $x = 28;
     $y = 125;
@@ -53,7 +53,7 @@ if ($smartcertificate->orientation == 'L') {
     $brdrw = 792;
     $brdrh = 612;
     $codey = 505;
-} else { // Portrait
+} else { // Portrait.
     $x = 28;
     $y = 170;
     $sealx = 440;
@@ -73,17 +73,17 @@ if ($smartcertificate->orientation == 'L') {
     $codey = 660;
 }
 
-// Add images and lines
+// Add images and lines.
 smartcertificate_print_image($pdf, $smartcertificate, CERT_IMAGE_BORDER, $brdrx, $brdry, $brdrw, $brdrh);
 smartcertificate_draw_frame_letter($pdf, $smartcertificate);
-// Set alpha to semi-transparency
+// Set alpha to semi-transparency.
 $pdf->SetAlpha(0.1);
 smartcertificate_print_image($pdf, $smartcertificate, CERT_IMAGE_WATERMARK, $wmarkx, $wmarky, $wmarkw, $wmarkh);
 $pdf->SetAlpha(1);
 smartcertificate_print_image($pdf, $smartcertificate, CERT_IMAGE_SEAL, $sealx, $sealy, '', '');
 smartcertificate_print_image($pdf, $smartcertificate, CERT_IMAGE_SIGNATURE, $sigx, $sigy, '', '');
 
-// Add text
+// Add text.
 $pdf->SetTextColor(0, 0, 120);
 smartcertificate_print_text($pdf, $x, $y, 'C', 'Helvetica', '', 30, get_string('title', 'smartcertificate'));
 $pdf->SetTextColor(0, 0, 0);

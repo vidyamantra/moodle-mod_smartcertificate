@@ -32,23 +32,23 @@ class backup_smartcertificate_activity_structure_step extends backup_activity_st
 
     protected function define_structure() {
 
-        // To know if we are including userinfo
+        // To know if we are including userinfo.
         $userinfo = $this->get_setting_value('userinfo');
 
-        // Define each element separated
+        // Define each element separated.
         $smartcertificate = new backup_nested_element('smartcertificate', array('id'), array(
             'name', 'intro', 'introformat', 'emailteachers', 'emailothers',
             'savecert', 'reportcert', 'delivery', 'smartcertificatetype', 'orientation',
             'borderstyle', 'bordercolor', 'printwmark', 'printdate', 'datefmt', 'printnumber',
             'printgrade', 'gradefmt', 'printoutcome', 'printhours', 'printteacher', 'customtext',
-            'printsignature', 'printseal', 'timecreated', 'timemodified','selectcompanyname','certificationname','certificationurl','licensenumber','linkedincheckbox'));
+            'printsignature', 'printseal', 'timecreated', 'timemodified', 'companyid', 'certificationname', 'certificationurl', 'licensenumber', 'linkedincheckbox'));
 
         $issues = new backup_nested_element('issues');
 
         $issue = new backup_nested_element('issue', array('id'), array(
             'smartcertificateid', 'userid', 'timecreated', 'code'));
 
-        // Build the tree
+        // Build the tree.
         $smartcertificate->add_child($issues);
         $issues->add_child($issue);
 
@@ -63,11 +63,11 @@ class backup_smartcertificate_activity_structure_step extends backup_activity_st
         // Annotate the user id's where required.
         $issue->annotate_ids('user', 'userid');
 
-        // Define file annotations
-        $smartcertificate->annotate_files('mod_smartcertificate', 'intro', null); // This file area hasn't itemid
+        // Define file annotations.
+        $smartcertificate->annotate_files('mod_smartcertificate', 'intro', null); // This file area hasn't itemid.
         $issue->annotate_files('mod_smartcertificate', 'issue', 'id');
 
-        // Return the root element (smartcertificate), wrapped into standard activity structure
+        // Return the root element (smartcertificate), wrapped into standard activity structure.
         return $this->prepare_activity_structure($smartcertificate);
     }
 }

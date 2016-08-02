@@ -41,7 +41,7 @@ class restore_smartcertificate_activity_structure_step extends restore_activity_
             $paths[] = new restore_path_element('smartcertificate_issue', '/activity/smartcertificate/issues/issue');
         }
 
-        // Return the paths wrapped into standard activity structure
+        // Return the paths wrapped into standard activity structure.
         return $this->prepare_activity_structure($paths);
     }
 
@@ -54,9 +54,9 @@ class restore_smartcertificate_activity_structure_step extends restore_activity_
         $data->timecreated = $this->apply_date_offset($data->timecreated);
         $data->timemodified = $this->apply_date_offset($data->timemodified);
 
-        // insert the smartcertificate record
+        // Insert the smartcertificate record.
         $newitemid = $DB->insert_record('smartcertificate', $data);
-        // immediately after inserting "activity" record, call this
+        // Immediately after inserting "activity" record, call this.
         $this->apply_activity_instance($newitemid);
     }
 
@@ -71,10 +71,10 @@ class restore_smartcertificate_activity_structure_step extends restore_activity_
         if ($data->userid > 0) {
             $data->userid = $this->get_mappingid('user', $data->userid);
         }
-     }
+    }
 
     protected function after_execute() {
-        // Add smartcertificate related files, no need to match by itemname (just internally handled context)
+        // Add smartcertificate related files, no need to match by itemname (just internally handled context).
         $this->add_related_files('mod_smartcertificate', 'issue', 'smartcertificate_issue');
     }
 }

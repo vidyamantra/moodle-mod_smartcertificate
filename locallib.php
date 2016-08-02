@@ -29,7 +29,7 @@ require_once($CFG->dirroot . '/course/lib.php');
 require_once($CFG->dirroot . '/grade/lib.php');
 require_once($CFG->dirroot . '/grade/querylib.php');
 require_once("$CFG->dirroot/mod/smartcertificate/mod_form.php");
-//require_once($CFG->libdir.'/filestorage/file_storage.php');
+
 
 /** The border image folder */
 define('CERT_IMAGE_BORDER', 'borders');
@@ -50,7 +50,7 @@ define('CERT_MAX_PER_PAGE', 200);
  * for sending email alerts to teachers
  *
  * @param stdClass $smartcertificate
- * @param stdClass $userhttp://localhost/moodle31/course
+ * @param stdClass $user http://localhost/moodle31/course
  * @param stdClass $course
  * @param stdClass $cm
  * @return array the teacher array
@@ -69,7 +69,7 @@ function smartcertificate_get_teachers($smartcertificate, $user, $course, $cm) {
             foreach ($groups as $group) {
                 foreach ($potteachers as $t) {
                     if ($t->id == $user->id) {
-                        continue; // do not send self.
+                        continue; // Do not send self.
                     }
                     if (groups_is_member($group->id, $t->id)) {
                         $teachers[$t->id] = $t;
@@ -77,12 +77,12 @@ function smartcertificate_get_teachers($smartcertificate, $user, $course, $cm) {
                 }
             }
         } else {
-            // user not in group, try to find teachers without group.
+            // User not in group, try to find teachers without group.
             foreach ($potteachers as $t) {
                 if ($t->id == $USER->id) {
-                    continue; // do not send self.
+                    continue; // Do not send self.
                 }
-                if (!groups_get_all_groups($course->id, $t->id)) { //ugly hack.
+                if (!groups_get_all_groups($course->id, $t->id)) { // Ugly hack.
                     $teachers[$t->id] = $t;
                 }
             }
@@ -90,7 +90,7 @@ function smartcertificate_get_teachers($smartcertificate, $user, $course, $cm) {
     } else {
         foreach ($potteachers as $t) {
             if ($t->id == $USER->id) {
-                continue; // do not send self.
+                continue; // Do not send self.
             }
             $teachers[$t->id] = $t;
         }
@@ -105,7 +105,7 @@ function smartcertificate_linkedin($smartcertificate, $cm) {
 
     if ($smartcertificate->linkedincheckbox == 1) {
         $companyid = $smartcertificate->companyid;
-        $completeurl =  $DB->get_field('smartcertificate_linkedin','completeurl', array('id' => $companyid)); 
+        $completeurl = $DB->get_field('smartcertificate_linkedin', 'completeurl', array('id' => $companyid));
         if ($completeurl) {
             $certificationname = preg_replace("/[\s_]/", "%20", $smartcertificate->certificationname);
             $certificationurl = preg_replace("/[\s_]/", "%2F", $smartcertificate->certificationurl);
@@ -113,9 +113,8 @@ function smartcertificate_linkedin($smartcertificate, $cm) {
             $linkname = get_string('addlinkedin', 'smartcertificate');
             $linkedinlink = new moodle_url('https://www.linkedin.com/profile/add' . $completeurl . 'CertificationName' . '=' . $certificationname .
             '&pfCertificationUrl' . '=' . $certificationurl . '&pfCertStartDate' .'=' .date("Ym"). '&pfLicenseNo' . '=' . $license . '&pf' . $cm->id);
-            $button = new single_button($linkedinlink, $linkname);
-            //$button->add_action(new popup_action('click', $linkedinlink, 'view', array('height' => 900, 'width' => 1400)));
-            $link = html_writer::tag('div', $OUTPUT->render($button), array('style' => 'text-align:center'));
+            $linkedinimage = html_writer::tag('div', html_writer::empty_tag('img', array('src' => 'image/linkedin.png')));
+            $link = html_writer::link($linkedinlink, $linkedinimage, array('style' => 'text-align:center', 'target' => '_blank'));
             return $link;
         }
     }
@@ -124,9 +123,9 @@ function smartcertificate_linkedin($smartcertificate, $cm) {
 // Linkedin instt. delete record.
 function smartcertificate_linkedin_del_instt($delete) {
     global $DB;
-    $result = $DB->record_exists('smartcertificate', array('companyid' => $delete)); 
+    $result = $DB->record_exists('smartcertificate', array('companyid' => $delete));
     if ($result == true) {
-    $DB->execute("UPDATE {smartcertificate} SET companyid = 0, certificationname = '', certificationurl = '',licensenumber = '' , linkedincheckbox = 0 WHERE companyid = $delete");
+    $DB->execute("UPDATE {smartcertificate} SET companyid = 0, certificationname = '', certificationurl = '', licensenumber = '' , linkedincheckbox = 0 WHERE companyid = $delete");
     }
     $DB->delete_records('smartcertificate_linkedin', array('id' => $delete));
 }
@@ -250,7 +249,7 @@ function smartcertificate_email_teachers_html($info) {
 function smartcertificate_email_student($course, $smartcertificate, $certrecord, $context, $filecontents, $filename) {
     global $USER;
 
-    // Get teachers
+    // Get teachers.
     if ($users = get_users_by_capability($context, 'moodle/course:update', 'u.*', 'u.id ASC', '', '', '', '', false, true)) {
         $users = sort_by_roleassignment_authority($users, $context);
         $teacher = array_shift($users);
@@ -275,7 +274,7 @@ function smartcertificate_email_student($course, $smartcertificate, $certrecord,
     $subject = $info->course . ': ' . $info->smartcertificate;
     $message = get_string('emailstudenttext', 'smartcertificate', $info) . "\n";
 
-    // Make the HTML version more XHTML happy  (&amp;)
+    // Make the HTML version more XHTML happy  (&amp;).
     $messagehtml = text_to_html(get_string('emailstudenttext', 'smartcertificate', $info));
 
     $tempdir = make_temp_directory('smartcertificate/attachment');
@@ -331,7 +330,7 @@ function smartcertificate_save_pdf($pdf, $certrecordid, $filename, $contextid) {
         'filename' => $filename, // any filename
         'mimetype' => 'application/pdf', // Any filename.
         'userid' => $USER->id);
-    
+
     // We do not know the previous file name, better delete everything here,
     // luckily there is supposed to be always only one smartcertificate here.
     $fs->delete_area_files($contextid, $component, $filearea, $certrecordid);
@@ -351,7 +350,7 @@ function smartcertificate_save_pdf($pdf, $certrecordid, $filename, $contextid) {
  */
 function smartcertificate_print_user_files($smartcertificate, $userid, $contextid) {
     global $CFG, $DB, $OUTPUT;
-    
+
     $output = '';
 
     $certrecord = $DB->get_record('smartcertificate_issues', array('userid' => $userid, 'smartcertificateid' => $smartcertificate->id));
@@ -389,7 +388,7 @@ function get_smartcertificate_path($smartcertificate, $userid, $contextid, $cm, 
     $filearea = 'issue';
     $filepath = '/';
     $filename = smartcertificate_get_smartcertificate_filename($smartcertificate, $cm, $course) . '.pdf';
-    $result = $DB->get_field('files', 'contenthash', 
+    $result = $DB->get_field('files', 'contenthash',
         array('userid' => $userid, 'component' => 'mod_smartcertificate', 'itemid' => $certrecord->id, 'contextid' => $contextid, 'filename' => $filename, 'filearea' => 'issue', 'filepath' => '/'));
     $a = substr("$result", 0, -38);
     $b = substr("$result", 2, -36);
@@ -417,7 +416,7 @@ function smartcertificate_get_issue($course, $user, $smartcertificate, $cm) {
         return $certissue;
     }
 
-    // Create new smartcertificate issue record
+    // Create new smartcertificate issue record.
     $certissue = new stdClass();
     $certissue->smartcertificateid = $smartcertificate->id;
     $certissue->userid = $user->id;
@@ -425,10 +424,10 @@ function smartcertificate_get_issue($course, $user, $smartcertificate, $cm) {
     $certissue->timecreated = time();
     $certissue->id = $DB->insert_record('smartcertificate_issues', $certissue);
 
-    // Email to the teachers and anyone else
+    // Email to the teachers and anyone else.
     smartcertificate_email_teachers($course, $smartcertificate, $certissue, $cm);
     smartcertificate_email_others($course, $smartcertificate, $certissue, $cm);
-   
+
     return $certissue;
 }
 
@@ -566,7 +565,7 @@ function smartcertificate_print_attempts($course, $smartcertificate, $attempts) 
 
     echo $OUTPUT->heading(get_string('summaryofattempts', 'smartcertificate'));
 
-    // Prepare table header
+    // Prepare table header.
     $table = new html_table();
     $table->class = 'generaltable';
     $table->head = array(get_string('issued', 'smartcertificate'));
@@ -578,11 +577,11 @@ function smartcertificate_print_attempts($course, $smartcertificate, $attempts) 
         $table->align[] = 'center';
         $table->size[] = '';
     }
-    // One row for each attempt
+    // One row for each attempt.
     foreach ($attempts as $attempt) {
         $row = array();
 
-        // prepare strings for time taken and date completed
+        // prepare strings for time taken and date completed.
         $datecompleted = userdate($attempt->timecreated);
         $row[] = $datecompleted;
 
@@ -643,20 +642,20 @@ function smartcertificate_get_course_time($courseid) {
     if ($logs = $DB->get_recordset_sql($sql, $params)) {
         foreach ($logs as $log) {
             if (!isset($login)) {
-                // For the first time $login is not set so the first log is also the first login
+                // For the first time $login is not set so the first log is also the first login.
                 $login = $log->$timefield;
                 $lasthit = $log->$timefield;
                 $totaltime = 0;
             }
             $delay = $log->$timefield - $lasthit;
             if ($delay > ($CFG->sessiontimeout * 60)) {
-                // The difference between the last log and the current log is more than
-                // the timeout Register session value so that we have found a session!
+                // The difference between the last log and the current log is more than.
+                // The timeout Register session value so that we have found a session!.
                 $login = $log->$timefield;
             } else {
                 $totaltime += $delay;
             }
-            // Now the actual log became the previous log for the next cycle
+            // Now the actual log became the previous log for the next cycle.
             $lasthit = $log->$timefield;
         }
 
@@ -678,14 +677,14 @@ function smartcertificate_get_mods() {
     $strweek = get_string("week");
     $strsection = get_string("section");
 
-    // Collect modules data
+    // Collect modules data.
     $modinfo = get_fast_modinfo($COURSE);
     $mods = $modinfo->get_cms();
 
     $modules = array();
     $sections = $modinfo->get_section_info_all();
     for ($i = 0; $i <= count($sections) - 1; $i++) {
-        // should always be true
+        // Should always be true.
         if (isset($sections[$i])) {
             $section = $sections[$i];
             if ($section->sequence) {
@@ -775,10 +774,10 @@ function smartcertificate_get_grade_categories($courseid) {
 function smartcertificate_get_outcomes() {
     global $COURSE;
 
-    // get all outcomes in course
+    // Get all outcomes in course.
     $grade_seq = new grade_tree($COURSE->id, false, true, '', false);
     if ($grade_items = $grade_seq->items) {
-        // list of item for menu
+        // List of item for menu.
         $printoutcome = array();
         foreach ($grade_items as $grade_item) {
             if (isset($grade_item->outcomeid)) {
@@ -859,16 +858,16 @@ function smartcertificate_get_images($type) {
             $uploadpath = "$CFG->dataroot/mod/smartcertificate/pix/watermarks";
             break;
     }
-    // If valid path
+    // If valid path.
     if (!empty($path)) {
         $options = array();
         $options += smartcertificate_scan_image_dir($path);
         $options += smartcertificate_scan_image_dir($uploadpath);
 
-        // Sort images
+        // Sort images.
         ksort($options);
 
-        // Add the 'no' option to the top of the array
+        // Add the 'no' option to the top of the array.
         $options = array_merge(array('0' => get_string('no')), $options);
 
         return $options;
@@ -936,11 +935,11 @@ function smartcertificate_get_date($smartcertificate, $certrecord, $course, $use
         $userid = $USER->id;
     }
 
-    // Set smartcertificate date to current time, can be overwritten later
+    // Set smartcertificate date to current time, can be overwritten later.
     $date = $certrecord->timecreated;
 
     if ($smartcertificate->printdate == '2') {
-        // Get the enrolment end date
+        // Get the enrolment end date.
         $sql = "SELECT MAX(c.timecompleted) as timecompleted
                   FROM {course_completions} c
                  WHERE c.userid = :userid
@@ -985,7 +984,7 @@ function smartcertificate_get_date($smartcertificate, $certrecord, $course, $use
 function smartcertificate_get_ordinal_number_suffix($day) {
     if (!in_array(($day % 100), array(11, 12, 13))) {
         switch ($day % 10) {
-            // Handle 1st, 2nd, 3rd
+            // Handle 1st, 2nd, 3rd.
             case 1: return 'st';
             case 2: return 'nd';
             case 3: return 'rd';
@@ -1036,7 +1035,7 @@ function smartcertificate_get_grade($smartcertificate, $course, $userid = null, 
 
                 return $grade;
             }
-        } else { // Print the mod grade
+        } else { // Print the mod grade.
             if ($modinfo = smartcertificate_get_mod_grade($course, $smartcertificate->printgrade, $userid)) {
                 // Check we want to add a prefix to the grade.
                 $strprefix = '';
@@ -1147,37 +1146,37 @@ function smartcertificate_print_text($pdf, $x, $y, $align, $font = 'freeserif', 
 function smartcertificate_draw_frame($pdf, $smartcertificate) {
     if ($smartcertificate->bordercolor > 0) {
         if ($smartcertificate->bordercolor == 1) {
-            $color = array(0, 0, 0); // black
+            $color = array(0, 0, 0); // Black.
         }
         if ($smartcertificate->bordercolor == 2) {
-            $color = array(153, 102, 51); // brown
+            $color = array(153, 102, 51); // Brown.
         }
         if ($smartcertificate->bordercolor == 3) {
-            $color = array(0, 51, 204); // blue
+            $color = array(0, 51, 204); // Blue.
         }
         if ($smartcertificate->bordercolor == 4) {
-            $color = array(0, 180, 0); // green
+            $color = array(0, 180, 0); // Green.
         }
         switch ($smartcertificate->orientation) {
             case 'L':
-                // create outer line border in selected color
+                // Create outer line border in selected color.
                 $pdf->SetLineStyle(array('width' => 1.5, 'color' => $color));
                 $pdf->Rect(10, 10, 277, 190);
-                // create middle line border in selected color
+                // Create middle line border in selected color.
                 $pdf->SetLineStyle(array('width' => 0.2, 'color' => $color));
                 $pdf->Rect(13, 13, 271, 184);
-                // create inner line border in selected color
+                // Create inner line border in selected color.
                 $pdf->SetLineStyle(array('width' => 1.0, 'color' => $color));
                 $pdf->Rect(16, 16, 265, 178);
                 break;
             case 'P':
-                // create outer line border in selected color
+                // Create outer line border in selected color.
                 $pdf->SetLineStyle(array('width' => 1.5, 'color' => $color));
                 $pdf->Rect(10, 10, 190, 277);
-                // create middle line border in selected color
+                // Create middle line border in selected color.
                 $pdf->SetLineStyle(array('width' => 0.2, 'color' => $color));
                 $pdf->Rect(13, 13, 184, 271);
-                // create inner line border in selected color
+                // Create inner line border in selected color.
                 $pdf->SetLineStyle(array('width' => 1.0, 'color' => $color));
                 $pdf->Rect(16, 16, 178, 265);
                 break;
@@ -1194,37 +1193,37 @@ function smartcertificate_draw_frame($pdf, $smartcertificate) {
 function smartcertificate_draw_frame_letter($pdf, $smartcertificate) {
     if ($smartcertificate->bordercolor > 0) {
         if ($smartcertificate->bordercolor == 1) {
-            $color = array(0, 0, 0); //black
+            $color = array(0, 0, 0); // Black.
         }
         if ($smartcertificate->bordercolor == 2) {
-            $color = array(153, 102, 51); //brown
+            $color = array(153, 102, 51); // Brown.
         }
         if ($smartcertificate->bordercolor == 3) {
-            $color = array(0, 51, 204); //blue
+            $color = array(0, 51, 204); // Blue.
         }
         if ($smartcertificate->bordercolor == 4) {
-            $color = array(0, 180, 0); //green
+            $color = array(0, 180, 0); // Green.
         }
         switch ($smartcertificate->orientation) {
             case 'L':
-                // create outer line border in selected color
+                // Create outer line border in selected color.
                 $pdf->SetLineStyle(array('width' => 4.25, 'color' => $color));
                 $pdf->Rect(28, 28, 736, 556);
-                // create middle line border in selected color
+                // Create middle line border in selected color.
                 $pdf->SetLineStyle(array('width' => 0.2, 'color' => $color));
                 $pdf->Rect(37, 37, 718, 538);
-                // create inner line border in selected color
+                // Create inner line border in selected color.
                 $pdf->SetLineStyle(array('width' => 2.8, 'color' => $color));
                 $pdf->Rect(46, 46, 700, 520);
                 break;
             case 'P':
-                // create outer line border in selected color
+                // Create outer line border in selected color.
                 $pdf->SetLineStyle(array('width' => 1.5, 'color' => $color));
                 $pdf->Rect(25, 20, 561, 751);
-                // create middle line border in selected color
+                // Create middle line border in selected color.
                 $pdf->SetLineStyle(array('width' => 0.2, 'color' => $color));
                 $pdf->Rect(40, 35, 531, 721);
-                // create inner line border in selected color
+                // Create inner line border in selected color.
                 $pdf->SetLineStyle(array('width' => 1.0, 'color' => $color));
                 $pdf->Rect(51, 46, 509, 699);
                 break;
@@ -1268,7 +1267,7 @@ function smartcertificate_print_image($pdf, $smartcertificate, $type, $x, $y, $w
             $uploadpath = "$CFG->dataroot/mod/smartcertificate/pix/$type/$smartcertificate->printwmark";
             break;
     }
-    // Has to be valid
+    // Has to be valid.
     if (!empty($path)) {
         switch ($smartcertificate->$attr) {
             case '0' :
@@ -1314,10 +1313,10 @@ function smartcertificate_generate_code() {
  * @return array
  */
 function smartcertificate_scan_image_dir($path) {
-    // Array to store the images
+    // Array to store the images.
     $options = array();
 
-    // Start to scan directory
+    // Start to scan directory.
     if (is_dir($path)) {
         $iterator = new DirectoryIterator($path);
         foreach ($iterator as $fileinfo) {

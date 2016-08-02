@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of the Smart Certificate module for Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -22,6 +21,6 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
- // This activity has no particular settings but the inherited from the generic
- // backup_activity_task so here there isn't any class definition, like the ones
- // existing in /backup/moodle2/backup_settingslib.php (activities section)
+ // This activity has no particular settings but the inherited from the generic.
+ // Backup_activity_task so here there isn't any class definition, like the ones.
+ // Existing in /backup/moodle2/backup_settingslib.php (activities section).

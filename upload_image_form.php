@@ -23,7 +23,7 @@
  */
 
 if (!defined('MOODLE_INTERNAL')) {
-    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+    die('Direct access to this script is forbidden.'); // It must be included from a Moodle page.
 }
 
 require_once($CFG->libdir.'/formslib.php');
@@ -31,10 +31,10 @@ require_once($CFG->dirroot.'/mod/smartcertificate/locallib.php');
 
 class mod_smartcertificate_upload_image_form extends moodleform {
 
-    function definition() {
+    public function definition() {
         global $CFG;
 
-        $mform =& $this->_form;
+        $mform = & $this->_form;
 
         $imagetypes = array(
             CERT_IMAGE_BORDER => get_string('border', 'smartcertificate'),
@@ -54,7 +54,7 @@ class mod_smartcertificate_upload_image_form extends moodleform {
     /**
      * Some validation - Michael Avelar <michaela@moodlerooms.com>
      */
-    function validation($data, $files) {
+    public function validation($data, $files) {
         $errors = parent::validation($data, $files);
 
         $supportedtypes = array('jpe' => 'image/jpeg',

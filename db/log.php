@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of the Smart Certificate module for Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -26,8 +25,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $logs = array(
-    array('module'=>'smartcertificate', 'action'=>'view', 'mtable'=>'smartcertificate', 'field'=>'name'),
-    array('module'=>'smartcertificate', 'action'=>'add', 'mtable'=>'smartcertificate', 'field'=>'name'),
-     array('module'=>'smartcertificate', 'action'=>'update', 'mtable'=>'smartcertificate', 'field'=>'name'),
-    array('module'=>'smartcertificate', 'action'=>'received', 'mtable'=>'smartcertificate', 'field'=>'name'),
+    array('module' => 'smartcertificate', 'action' => 'view', 'mtable' => 'smartcertificate', 'field' => 'name'),
+    array('module' => 'smartcertificate', 'action' => 'add', 'mtable' => 'smartcertificate', 'field' => 'name'),
+     array('module' => 'smartcertificate', 'action' => 'update', 'mtable' => 'smartcertificate', 'field' => 'name'),
+    array('module' => 'smartcertificate', 'action' => 'received', 'mtable' => 'smartcertificate', 'field' => 'name'),
 );

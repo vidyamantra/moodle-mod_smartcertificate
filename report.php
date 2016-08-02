@@ -25,7 +25,7 @@
 require_once('../../config.php');
 require_once('locallib.php');
 
-$id   = required_param('id', PARAM_INT); // Course module ID
+$id   = required_param('id', PARAM_INT); // Course module ID.
 $sort = optional_param('sort', '', PARAM_RAW);
 $download = optional_param('download', '', PARAM_ALPHA);
 $action = optional_param('action', '', PARAM_ALPHA);
@@ -33,8 +33,8 @@ $action = optional_param('action', '', PARAM_ALPHA);
 $page = optional_param('page', 0, PARAM_INT);
 $perpage = optional_param('perpage', CERT_PER_PAGE, PARAM_INT);
 
-// Ensure the perpage variable does not exceed the max allowed if
-// the user has not specified they wish to view all smartcertificates.
+// Ensure the perpage variable does not exceed the max allowed if.
+// The user has not specified they wish to view all smartcertificates.
 if (CERT_PER_PAGE !== 0) {
     if (($perpage > CERT_MAX_PER_PAGE) || ($perpage <= 0)) {
         $perpage = CERT_MAX_PER_PAGE;
@@ -43,7 +43,7 @@ if (CERT_PER_PAGE !== 0) {
     $perpage = '9999999';
 }
 
-$url = new moodle_url('/mod/smartcertificate/report.php', array('id'=>$id, 'page' => $page, 'perpage' => $perpage));
+$url = new moodle_url('/mod/smartcertificate/report.php', array('id' => $id, 'page' => $page, 'perpage' => $perpage));
 if ($download) {
     $url->param('download', $download);
 }
@@ -56,45 +56,45 @@ if (!$cm = get_coursemodule_from_id('smartcertificate', $id)) {
     print_error('Course Module ID was incorrect');
 }
 
-if (!$course = $DB->get_record('course', array('id'=> $cm->course))) {
+if (!$course = $DB->get_record('course', array('id' => $cm->course))) {
     print_error('Course is misconfigured');
 }
 
-if (!$smartcertificate = $DB->get_record('smartcertificate', array('id'=> $cm->instance))) {
+if (!$smartcertificate = $DB->get_record('smartcertificate', array('id' => $cm->instance))) {
     print_error('Certificate ID was incorrect');
 }
 
-// Requires a course login
+// Requires a course login.
 require_login($course, false, $cm);
 
-// Check capabilities
+// Check capabilities.
 $context = context_module::instance($cm->id);
 require_capability('mod/smartcertificate:manage', $context);
 
-// Declare some variables
+// Declare some variables.
 $strsmartcertificates = get_string('modulenameplural', 'smartcertificate');
-$strsmartcertificate  = get_string('modulename', 'smartcertificate');
+$strsmartcertificate = get_string('modulename', 'smartcertificate');
 $strto = get_string('awardedto', 'smartcertificate');
 $strdate = get_string('receiveddate', 'smartcertificate');
-$strgrade = get_string('grade','smartcertificate');
+$strgrade = get_string('grade', 'smartcertificate');
 $strcode = get_string('code', 'smartcertificate');
-$strreport= get_string('report', 'smartcertificate');
+$strreport = get_string('report', 'smartcertificate');
 
 if (!$download) {
     $PAGE->navbar->add($strreport);
     $PAGE->set_title(format_string($smartcertificate->name).": $strreport");
     $PAGE->set_heading($course->fullname);
-    // Check to see if groups are being used in this choice
+    // Check to see if groups are being used in this choice.
     if ($groupmode = groups_get_activity_groupmode($cm)) {
         groups_get_activity_group($cm, true);
     }
 } else {
     $groupmode = groups_get_activity_groupmode($cm);
-    // Get all results when $page and $perpage are 0
+    // Get all results when $page and $perpage are 0.
     $page = $perpage = 0;
 }
 
-// Ensure there are issues to display, if not display notice
+// Ensure there are issues to display, if not display notice.
 if (!$users = smartcertificate_get_issues($smartcertificate->id, $DB->sql_fullname(), $groupmode, $cm, $page, $perpage)) {
     echo $OUTPUT->header();
     groups_print_activity_menu($cm, $CFG->wwwroot . '/mod/smartcertificate/report.php?id='.$id);
@@ -109,16 +109,16 @@ $extrafields = get_extra_user_fields($context);
 if ($download == "ods") {
     require_once("$CFG->libdir/odslib.class.php");
 
-    // Calculate file name
+    // Calculate file name.
     $filename = smartcertificate_get_smartcertificate_filename($smartcertificate, $cm, $course) . '.ods';
-    // Creating a workbook
+    // Creating a workbook.
     $workbook = new MoodleODSWorkbook("-");
-    // Send HTTP headers
+    // Send HTTP headers.
     $workbook->send($filename);
-    // Creating the first worksheet
+    // Creating the first worksheet.
     $myxls = $workbook->add_worksheet($strreport);
 
-    // Print names of all the fields
+    // Print names of all the fields.
     $myxls->write_string(0, 0, get_string("lastname"));
     $myxls->write_string(0, 1, get_string("firstname"));
     $nextposition = 2;
@@ -131,7 +131,7 @@ if ($download == "ods") {
     $myxls->write_string(0, $nextposition + 2, $strgrade);
     $myxls->write_string(0, $nextposition + 3, $strcode);
 
-    // Generate the data for the body of the spreadsheet
+    // Generate the data for the body of the spreadsheet.
     $i = 0;
     $row = 1;
     if ($users) {
@@ -157,7 +157,7 @@ if ($download == "ods") {
         }
         $pos = 6;
     }
-    // Close the workbook
+    // Close the workbook.
     $workbook->close();
     exit;
 }
@@ -165,16 +165,16 @@ if ($download == "ods") {
 if ($download == "xls") {
     require_once("$CFG->libdir/excellib.class.php");
 
-    // Calculate file name
+    // Calculate file name.
     $filename = smartcertificate_get_smartcertificate_filename($smartcertificate, $cm, $course) . '.xls';
-    // Creating a workbook
+    // Creating a workbook.
     $workbook = new MoodleExcelWorkbook("-");
-    // Send HTTP headers
+    // Send HTTP headers.
     $workbook->send($filename);
-    // Creating the first worksheet
+    // Creating the first worksheet.
     $myxls = $workbook->add_worksheet($strreport);
 
-    // Print names of all the fields
+    // Print names of all the fields.
     $myxls->write_string(0, 0, get_string("lastname"));
     $myxls->write_string(0, 1, get_string("firstname"));
     $nextposition = 2;
@@ -187,7 +187,7 @@ if ($download == "xls") {
     $myxls->write_string(0, $nextposition + 2, $strgrade);
     $myxls->write_string(0, $nextposition + 3, $strcode);
 
-    // Generate the data for the body of the spreadsheet
+    // Generate the data for the body of the spreadsheet.
     $i = 0;
     $row = 1;
     if ($users) {
@@ -213,7 +213,7 @@ if ($download == "xls") {
         }
         $pos = 6;
     }
-    // Close the workbook
+    // Close the workbook.
     $workbook->close();
     exit;
 }
@@ -227,7 +227,7 @@ if ($download == "txt") {
     header("Cache-Control: must-revalidate,post-check=0,pre-check=0");
     header("Pragma: public");
 
-    // Print names of all the fields
+    // Print names of all the fields.
     echo get_string("lastname"). "\t" .get_string("firstname") . "\t";
     foreach ($extrafields as $field) {
         echo get_user_field_name($field) . "\t";
@@ -237,9 +237,9 @@ if ($download == "txt") {
     echo $strgrade. "\t";
     echo $strcode. "\n";
 
-    // Generate the data for the body of the spreadsheet
-    $i=0;
-    $row=1;
+    // Generate the data for the body of the spreadsheet.
+    $i = 0;
+    $row = 1;
     if ($users) foreach ($users as $user) {
         echo $user->lastname;
         echo "\t" . $user->firstname . "\t";
@@ -263,7 +263,7 @@ if ($download == "txt") {
 
 $usercount = count(smartcertificate_get_issues($smartcertificate->id, $DB->sql_fullname(), $groupmode, $cm));
 
-// Create the table for the users
+// Create the table for the users.
 $table = new html_table();
 $table->width = "95%";
 $table->tablealign = "center";
@@ -288,12 +288,12 @@ foreach ($users as $user) {
     $table->data[] = $data;
 }
 
-// Create table to store buttons
+// Create table to store buttons.
 $tablebutton = new html_table();
 $tablebutton->attributes['class'] = 'downloadreport';
-$btndownloadods = $OUTPUT->single_button(new moodle_url("report.php", array('id'=>$cm->id, 'download'=>'ods')), get_string("downloadods"));
-$btndownloadxls = $OUTPUT->single_button(new moodle_url("report.php", array('id'=>$cm->id, 'download'=>'xls')), get_string("downloadexcel"));
-$btndownloadtxt = $OUTPUT->single_button(new moodle_url("report.php", array('id'=>$cm->id, 'download'=>'txt')), get_string("downloadtext"));
+$btndownloadods = $OUTPUT->single_button(new moodle_url("report.php", array('id' => $cm->id, 'download' => 'ods')), get_string("downloadods"));
+$btndownloadxls = $OUTPUT->single_button(new moodle_url("report.php", array('id' => $cm->id, 'download' => 'xls')), get_string("downloadexcel"));
+$btndownloadtxt = $OUTPUT->single_button(new moodle_url("report.php", array('id' => $cm->id, 'download' => 'txt')), get_string("downloadtext"));
 $tablebutton->data[] = array($btndownloadods, $btndownloadxls, $btndownloadtxt);
 
 echo $OUTPUT->header();

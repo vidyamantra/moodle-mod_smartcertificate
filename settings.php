@@ -34,12 +34,12 @@ $ADMIN->add('modsmartcertificatefolder', new admin_externalpage('linkedin_regist
         get_string('linkdinregisinst', 'smartcertificate'),
         new moodle_url("$CFG->wwwroot/mod/smartcertificate/linkedin_registered_inst.php")));
 
-    foreach (core_plugin_manager::instance()->get_plugins_of_type('modsmartcertificate') as $plugin) {
-   
+foreach (core_plugin_manager::instance()->get_plugins_of_type('modsmartcertificate') as $plugin) {
+
     $plugin->load_settings($ADMIN, 'modsmartcertificatefolder', $hassiteconfig);
 }
 if ($ADMIN->fulltree) {
-    
+
     $settings->add(new mod_smartcertificate_admin_setting_upload('smartcertificate/uploadimage',
         get_string('uploadimage', 'mod_smartcertificate'), get_string('uploadimagedesc', 'smartcertificate'), ''));
 
@@ -48,7 +48,7 @@ if ($ADMIN->fulltree) {
 
     $settings->add(new mod_smartcertificate_admin_setting_font('smartcertificate/fontserif',
         get_string('fontserif', 'mod_smartcertificate'), get_string('fontserif_desc', 'mod_smartcertificate'), 'freeserif'));
-   
+
 }
 $settings = null;
 

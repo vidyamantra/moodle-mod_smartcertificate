@@ -41,17 +41,17 @@ $PAGE->set_title($struploadimage);
 $PAGE->set_heading($SITE->fullname);
 $PAGE->navbar->add($struploadimage);
 
-$upload_form = new mod_smartcertificate_upload_image_form();
+$uploadform = new mod_smartcertificate_upload_image_form();
 
-if ($upload_form->is_cancelled()) {
+if ($uploadform->is_cancelled()) {
     redirect(new moodle_url('/admin/settings.php?section=modsettingsmartcertificate'));
-} else if ($data = $upload_form->get_data()) {
-    // Ensure the directory for storing is created
+} else if ($data = $uploadform->get_data()) {
+    // Ensure the directory for storing is created.
     $uploaddir = "mod/smartcertificate/pix/$data->imagetype";
-    $filename = $upload_form->get_new_filename('smartcertificateimage');
+    $filename = $uploadform->get_new_filename('smartcertificateimage');
     make_upload_directory($uploaddir);
     $destination = $CFG->dataroot . '/' . $uploaddir . '/' . $filename;
-    if (!$upload_form->save_file('smartcertificateimage', $destination, true)) {
+    if (!$uploadform->save_file('smartcertificateimage', $destination, true)) {
         throw new coding_exception('File upload failed');
     }
 
@@ -59,5 +59,5 @@ if ($upload_form->is_cancelled()) {
 }
 
 echo $OUTPUT->header();
-echo $upload_form->display();
+echo $uploadform->display();
 echo $OUTPUT->footer();
